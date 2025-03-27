@@ -2,14 +2,28 @@ import Validator from "shacl-engine/Validator.js"
 import { validations } from "shacl-engine/sparql.js"
 import { Parser, Store } from "n3"
 import rdf from "rdf-ext"
+import formatsPretty from "@rdfjs/formats/pretty.js"
 
 const parser = new Parser({ factory: rdf })
+rdf.formats.import(formatsPretty)
 
 export const prefixes = {
     ff: "https://foerderfunke.org/default#",
     sh: "http://www.w3.org/ns/shacl#",
     xsd: "http://www.w3.org/2001/XMLSchema#",
     rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+}
+
+const prefixesArr = Object.entries(prefixes).map(
+    ([prefix, iri]) => [prefix, rdf.namedNode(iri)]
+)
+
+export async function datasetToTurtle(dataset) {
+    return await rdf.io.dataset.toText("text/turtle", dataset, { prefixes: prefixesArr })
+}
+
+export function turtleToDataset(turtle) {
+    return rdf.dataset(parser.parse(turtle))
 }
 
 export function buildValidator(shaclStr) {

@@ -1,7 +1,8 @@
 {
-  "name": "sem-ops-utils",
+  "name": "@foerderfunke/sem-ops-utils",
   "version": "0.1.0",
   "description": "A collection of utility functions and libraries for semantic operations",
+  "author": "@foerderfunke",
   "license": "CC0-1.0",
   "type": "module",
   "main": "src/main.js",

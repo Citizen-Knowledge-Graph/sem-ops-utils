@@ -1,8 +1,9 @@
 {
   "name": "@foerderfunke/sem-ops-utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A collection of utility functions and libraries for semantic operations",
   "author": "@foerderfunke",
+  "repository": "github:Citizen-Knowledge-Graph/sem-ops-utils",
   "license": "CC0-1.0",
   "type": "module",
   "main": "src/main.js",

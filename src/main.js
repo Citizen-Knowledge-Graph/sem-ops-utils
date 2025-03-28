@@ -4,7 +4,7 @@ import { Parser, Store } from "n3"
 import rdf from "rdf-ext"
 import formatsPretty from "@rdfjs/formats/pretty.js"
 
-const parser = new Parser({ factory: rdf })
+export const parser = new Parser({ factory: rdf })
 rdf.formats.import(formatsPretty)
 
 export const prefixes = {

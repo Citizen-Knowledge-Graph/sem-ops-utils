@@ -1,7 +1,11 @@
 import {
     datasetToTurtle,
+    datasetToJsonLdObj,
     turtleToDataset,
+    jsonLdObjToDataset,
     buildValidator,
+    newStore,
+    addTurtleToStore,
     storeFromTurtles,
     extractFirstIndividualUriFromTurtle,
     expandShortenedUri
@@ -9,8 +13,12 @@ import {
 
 window.SemOpsUtils = {
     datasetToTurtle,
+    datasetToJsonLdObj,
     turtleToDataset,
+    jsonLdObjToDataset,
     buildValidator,
+    newStore,
+    addTurtleToStore,
     storeFromTurtles,
     extractFirstIndividualUriFromTurtle,
     expandShortenedUri

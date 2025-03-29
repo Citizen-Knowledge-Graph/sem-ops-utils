@@ -31,6 +31,14 @@ export function buildValidator(shaclStr) {
     return new Validator(dataset, { factory: rdf, validations })
 }
 
+export function newStore() {
+    return new Store({ factory: rdf })
+}
+
+export function addTurtleToStore(store, turtle) {
+    store.addQuads(parser.parse(turtle))
+}
+
 export function storeFromTurtles(turtleStrings) {
     const store = new Store({ factory: rdf })
     for (let str of turtleStrings) store.addQuads(parser.parse(str))

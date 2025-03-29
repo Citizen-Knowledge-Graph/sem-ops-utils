@@ -3,6 +3,7 @@ import { validations } from "shacl-engine/sparql.js"
 import { Parser, Store } from "n3"
 import rdf from "rdf-ext"
 import formatsPretty from "@rdfjs/formats/pretty.js"
+import jsonld from "jsonld"
 
 export const parser = new Parser({ factory: rdf })
 rdf.formats.import(formatsPretty)
@@ -22,8 +23,19 @@ export async function datasetToTurtle(dataset) {
     return await rdf.io.dataset.toText("text/turtle", dataset, { prefixes: prefixesArr })
 }
 
+export async function datasetToJsonLdObj(dataset) {
+    const nquads = await rdf.io.dataset.toText("application/n-quads", dataset)
+    const doc = await jsonld.fromRDF(nquads, { format: "application/n-quads" })
+    return await jsonld.compact(doc, prefixes)
+}
+
 export function turtleToDataset(turtle) {
     return rdf.dataset(parser.parse(turtle))
+}
+
+export async function jsonLdObjToDataset(jsonLdObj) {
+    const nquads = await jsonld.toRDF(jsonLdObj, { format: "application/n-quads" })
+    return rdf.dataset(parser.parse(nquads))
 }
 
 export function buildValidator(shaclStr) {

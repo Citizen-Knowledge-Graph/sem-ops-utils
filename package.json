@@ -11,7 +11,7 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@comunica/query-sparql-rdfjs": "^4.1.0",
+    "@comunica/query-sparql-rdfjs-lite": "^4.1.0",
     "jsonld": "^8.3.3",
     "n3": "^1.24.2",
     "rdf-ext": "^2.5.2",

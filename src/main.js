@@ -1,12 +1,14 @@
 import Validator from "shacl-engine/Validator.js"
 import { validations } from "shacl-engine/sparql.js"
 import { Parser, Store } from "n3"
+import { QueryEngine } from "@comunica/query-sparql-rdfjs-lite"
 import rdf from "rdf-ext"
 import formatsPretty from "@rdfjs/formats/pretty.js"
 import jsonld from "jsonld"
 
-export const parser = new Parser({ factory: rdf })
 rdf.formats.import(formatsPretty)
+export const parser = new Parser({ factory: rdf })
+export const queryEngine = new QueryEngine()
 
 export const prefixes = {
     ff: "https://foerderfunke.org/default#",
@@ -47,6 +49,12 @@ export function newStore() {
     return new Store({ factory: rdf })
 }
 
+export function storeFromDataset(dataset) {
+    const store = newStore()
+    for (let quad of dataset) store.addQuad(quad)
+    return store
+}
+
 export function addTurtleToStore(store, turtle) {
     store.addQuads(parser.parse(turtle))
 }
@@ -55,6 +63,20 @@ export function storeFromTurtles(turtleStrings) {
     const store = new Store({ factory: rdf })
     for (let str of turtleStrings) store.addQuads(parser.parse(str))
     return store
+}
+
+export function storeToTurtle(store) {
+    const dataset = rdf.dataset(store.getQuads())
+    return datasetToTurtle(dataset)
+}
+
+export async function sparqlConstruct(query, sourceStore, targetStore) {
+    const quadStream = await queryEngine.queryQuads(query, { sources: [ sourceStore ] })
+    return new Promise((resolve, reject) => {
+        quadStream.on("data", (quad) => targetStore.addQuad(quad))
+        quadStream.on("end", () => resolve())
+        quadStream.on("error", (err) => reject(err))
+    })
 }
 
 export function extractFirstIndividualUriFromTurtle(turtle, classUri) {

@@ -5,6 +5,7 @@ import { QueryEngine } from "@comunica/query-sparql-rdfjs-lite"
 import rdf from "rdf-ext"
 import formatsPretty from "@rdfjs/formats/pretty.js"
 import jsonld from "jsonld"
+import { isomorphic } from "rdf-isomorphic" // also comes as sub-dependency of @comunica/query-sparql-rdfjs-lite
 
 rdf.formats.import(formatsPretty)
 export const parser = new Parser({ factory: rdf })
@@ -77,6 +78,10 @@ export async function sparqlConstruct(query, sourceStore, targetStore) {
         quadStream.on("end", () => resolve())
         quadStream.on("error", (err) => reject(err))
     })
+}
+
+export function isomorphicTurtles(turtle1, turtle2) {
+    return isomorphic(turtleToDataset(turtle1), turtleToDataset(turtle2))
 }
 
 export function extractFirstIndividualUriFromTurtle(turtle, classUri) {

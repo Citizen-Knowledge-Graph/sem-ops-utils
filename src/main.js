@@ -71,6 +71,16 @@ export function storeToTurtle(store) {
     return datasetToTurtle(dataset)
 }
 
+export function addTripleToStore(store, sub, pred, obj) {
+    let object
+    if (obj.startsWith("http://") || obj.startsWith("https://")) {
+        object = rdf.namedNode(obj)
+    } else {
+        object = rdf.literal(obj)
+    }
+    store.addQuad(rdf.namedNode(sub), rdf.namedNode(pred), object)
+}
+
 export async function sparqlConstruct(query, sourceStore, targetStore) {
     const quadStream = await queryEngine.queryQuads(query, { sources: [ sourceStore ] })
     return new Promise((resolve, reject) => {

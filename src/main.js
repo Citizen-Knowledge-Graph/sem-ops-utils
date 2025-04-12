@@ -11,6 +11,8 @@ rdf.formats.import(formatsPretty)
 export const parser = new Parser({ factory: rdf })
 export const queryEngine = new QueryEngine()
 
+export const a = rdf.namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
+
 export const prefixes = {
     ff: "https://foerderfunke.org/default#",
     sh: "http://www.w3.org/ns/shacl#",
@@ -56,6 +58,10 @@ export function storeFromDataset(dataset) {
     return store
 }
 
+export function datasetFromStore(store) {
+    return rdf.dataset(store.getQuads())
+}
+
 export function addTurtleToStore(store, turtle) {
     store.addQuads(parser.parse(turtle))
 }
@@ -71,14 +77,16 @@ export function storeToTurtle(store) {
     return datasetToTurtle(dataset)
 }
 
+function parseObjectStr(obj) {
+    if (obj.toLowerCase() === "true") return rdf.literal(true)
+    if (obj.toLowerCase() === "false") return rdf.literal(false)
+    if (!isNaN(obj)) return rdf.literal(obj)
+    if (obj.startsWith("http://") || obj.startsWith("https://")) return rdf.namedNode(obj)
+    return rdf.literal(obj)
+}
+
 export function addTripleToStore(store, sub, pred, obj) {
-    let object
-    if (obj.startsWith("http://") || obj.startsWith("https://")) {
-        object = rdf.namedNode(obj)
-    } else {
-        object = rdf.literal(obj)
-    }
-    store.addQuad(rdf.namedNode(sub), rdf.namedNode(pred), object)
+    store.addQuad(rdf.namedNode(sub), rdf.namedNode(pred), parseObjectStr(obj))
 }
 
 export async function sparqlConstruct(query, sourceStores, targetStore) {
@@ -129,4 +137,8 @@ export function expandShortenedUri(str) {
         }
     }
     return str
+}
+
+export function quadToTriple(quad) {
+    return { s: quad.subject.value, p: quad.predicate.value, o: quad.object.value }
 }

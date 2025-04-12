@@ -81,11 +81,15 @@ export function addTripleToStore(store, sub, pred, obj) {
     store.addQuad(rdf.namedNode(sub), rdf.namedNode(pred), object)
 }
 
-export async function sparqlConstruct(query, sourceStore, targetStore) {
-    const quadStream = await queryEngine.queryQuads(query, { sources: [ sourceStore ] })
+export async function sparqlConstruct(query, sourceStores, targetStore) {
+    const quadStream = await queryEngine.queryQuads(query, { sources: sourceStores })
+    let constructedQuads = []
     return new Promise((resolve, reject) => {
-        quadStream.on("data", (quad) => targetStore.addQuad(quad))
-        quadStream.on("end", () => resolve())
+        quadStream.on("data", (quad) => {
+            targetStore.addQuad(quad)
+            constructedQuads.push(quad)
+        })
+        quadStream.on("end", () => resolve(constructedQuads))
         quadStream.on("error", (err) => reject(err))
     })
 }

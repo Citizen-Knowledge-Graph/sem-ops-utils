@@ -94,6 +94,22 @@ export async function sparqlConstruct(query, sourceStores, targetStore) {
     })
 }
 
+export async function sparqlSelectOnStore(query, store) {
+    let bindingsStream = await queryEngine.queryBindings(query, { sources: [ store ] })
+    let rows = []
+    return new Promise((resolve, reject) => {
+        bindingsStream.on("data", (binding) => {
+            let row = {}
+            for (const [ key, value ] of binding) {
+                row[key.value] = value.value
+                rows.push(row)
+            }
+        })
+        bindingsStream.on("end", () => resolve(rows))
+        bindingsStream.on("error", (err) => reject(err))
+    })
+}
+
 export function isomorphicTurtles(turtle1, turtle2) {
     return isomorphic(turtleToDataset(turtle1), turtleToDataset(turtle2))
 }

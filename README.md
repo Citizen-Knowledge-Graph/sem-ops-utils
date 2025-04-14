@@ -7,6 +7,14 @@ npm run build
 npm publish
 ```
 
+## Develop
+
+```shell
+npm test
+# example for running a specific test:
+npm test -- --grep "quiz-matching"
+```
+
 ## Usage
 
 ```shell

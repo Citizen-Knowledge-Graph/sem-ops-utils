@@ -77,7 +77,8 @@ export function storeToTurtle(store) {
     return datasetToTurtle(dataset)
 }
 
-function parseObjectStr(obj) {
+function parseObject(obj) {
+    if (obj.constructor.name !== "String") return obj
     if (obj.toLowerCase() === "true") return rdf.literal(true)
     if (obj.toLowerCase() === "false") return rdf.literal(false)
     if (!isNaN(obj)) return rdf.literal(obj)
@@ -86,7 +87,7 @@ function parseObjectStr(obj) {
 }
 
 export function addTripleToStore(store, sub, pred, obj) {
-    store.addQuad(rdf.namedNode(sub), rdf.namedNode(pred), parseObjectStr(obj))
+    store.addQuad(rdf.namedNode(sub), rdf.namedNode(pred), parseObject(obj))
 }
 
 export async function sparqlConstruct(query, sourceStores, targetStore) {

@@ -100,7 +100,7 @@ export async function sparqlConstruct(query, sourceStores, targetStore) {
     let constructedQuads = []
     return new Promise((resolve, reject) => {
         quadStream.on("data", (quad) => {
-            targetStore.addQuad(quad)
+            if (targetStore) targetStore.addQuad(quad)
             constructedQuads.push(quad)
         })
         quadStream.on("end", () => resolve(constructedQuads))

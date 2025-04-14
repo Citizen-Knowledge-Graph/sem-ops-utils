@@ -77,6 +77,11 @@ export function storeToTurtle(store) {
     return datasetToTurtle(dataset)
 }
 
+export function storeToJsonLdObj(store) {
+    const dataset = rdf.dataset(store.getQuads())
+    return datasetToJsonLdObj(dataset)
+}
+
 function parseObject(obj) {
     if (obj.constructor.name === "NamedNode" || obj.constructor.name === "Literal" ) return obj
     if (obj.toString().toLowerCase() === "true") return rdf.literal(true)

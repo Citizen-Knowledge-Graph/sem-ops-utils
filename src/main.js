@@ -78,9 +78,9 @@ export function storeToTurtle(store) {
 }
 
 function parseObject(obj) {
-    if (obj.constructor.name !== "String") return obj
-    if (obj.toLowerCase() === "true") return rdf.literal(true)
-    if (obj.toLowerCase() === "false") return rdf.literal(false)
+    if (obj.constructor.name === "NamedNode" || obj.constructor.name === "Literal" ) return obj
+    if (obj.toString().toLowerCase() === "true") return rdf.literal(true)
+    if (obj.toString().toLowerCase() === "false") return rdf.literal(false)
     if (!isNaN(obj)) return rdf.literal(obj)
     if (obj.startsWith("http://") || obj.startsWith("https://")) return rdf.namedNode(obj)
     return rdf.literal(obj)

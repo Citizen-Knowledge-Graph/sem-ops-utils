@@ -108,7 +108,7 @@ export async function sparqlConstruct(query, sourceStores, targetStore) {
     })
 }
 
-export async function sparqlSelectOnStore(query, store) {
+export async function sparqlSelect(query, store) {
     let bindingsStream = await queryEngine.queryBindings(query, { sources: [ store ] })
     let rows = []
     return new Promise((resolve, reject) => {
@@ -122,6 +122,10 @@ export async function sparqlSelectOnStore(query, store) {
         bindingsStream.on("end", () => resolve(rows))
         bindingsStream.on("error", (err) => reject(err))
     })
+}
+
+export async function sparqlInsertDelete(query, store) {
+    await queryEngine.queryVoid(query, { sources: [store] })
 }
 
 export function isomorphicTurtles(turtle1, turtle2) {

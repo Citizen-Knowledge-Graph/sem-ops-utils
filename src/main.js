@@ -97,7 +97,7 @@ function parseObject(obj) {
     return rdf.literal(String(value), rdf.namedNode(prefixes.xsd + "decimal"))
 }
 
-export function addTripleToStore(store, sub, pred, obj) {
+export function addTriple(store, sub, pred, obj) {
     store.addQuad(rdf.namedNode(sub), rdf.namedNode(pred), parseObject(obj))
 }
 

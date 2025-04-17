@@ -139,7 +139,7 @@ export function isomorphicTurtles(turtle1, turtle2) {
 export function extractFirstIndividualUriFromTurtle(turtle, classUri) {
     const regex = new RegExp(`(.*?)\\s+a\\s+${classUri}`)
     const match = turtle.match(regex)
-    if (match) return expandShortenedUri(match[1].trim())
+    if (match) return expand(match[1].trim())
     console.error(`Could not extract individual URI of class ${classUri} from turtle string via regex`)
     return ""
 }

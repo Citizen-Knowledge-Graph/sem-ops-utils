@@ -145,6 +145,15 @@ export function expandShortenedUri(str) {
     return str
 }
 
+export function shrinkUri(str) {
+    for (let [ prefix, uri ] of Object.entries(prefixes)) {
+        if (str.startsWith(uri)) {
+            return prefix + ":" + str.slice(uri.length)
+        }
+    }
+    return str
+}
+
 export function quadToTriple(quad) {
     return { s: quad.subject.value, p: quad.predicate.value, o: quad.object.value }
 }

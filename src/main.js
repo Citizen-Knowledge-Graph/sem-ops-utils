@@ -88,11 +88,13 @@ export function storeToJsonLdObj(store) {
 
 function parseObject(obj) {
     if (obj.constructor.name === "NamedNode" || obj.constructor.name === "Literal" ) return obj
-    if (obj.toString().toLowerCase() === "true") return rdf.literal(true)
-    if (obj.toString().toLowerCase() === "false") return rdf.literal(false)
-    if (!isNaN(obj)) return rdf.literal(obj)
-    if (obj.startsWith("http://") || obj.startsWith("https://")) return rdf.namedNode(obj)
-    return rdf.literal(obj)
+    if (obj.toString().toLowerCase() === "true") return rdf.literal(true, rdf.namedNode(prefixes.xsd + "boolean"))
+    if (obj.toString().toLowerCase() === "false") return rdf.literal(false, rdf.namedNode(prefixes.xsd + "boolean"))
+    if (obj.constructor.name === "String" && (obj.startsWith("http://") || obj.startsWith("https://"))) return rdf.namedNode(obj)
+    if (isNaN(obj)) return rdf.literal(obj)
+    const value = Number(obj)
+    if (Number.isInteger(value)) return rdf.literal(String(value), rdf.namedNode(prefixes.xsd + "integer"))
+    return rdf.literal(String(value), rdf.namedNode(prefixes.xsd + "decimal"))
 }
 
 export function addTripleToStore(store, sub, pred, obj) {

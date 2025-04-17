@@ -38,6 +38,10 @@ export function turtleToDataset(turtle) {
     return rdf.dataset(parser.parse(turtle))
 }
 
+export async function turtleToJsonLdObj(turtle) {
+    return datasetToJsonLdObj(turtleToDataset(turtle))
+}
+
 export async function jsonLdObjToDataset(jsonLdObj) {
     const nquads = await jsonld.toRDF(jsonLdObj, { format: "application/n-quads" })
     return rdf.dataset(parser.parse(nquads))

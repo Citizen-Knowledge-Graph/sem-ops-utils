@@ -144,22 +144,22 @@ export function extractFirstIndividualUriFromTurtle(turtle, classUri) {
     return ""
 }
 
-export function expandShortenedUri(str) {
+export function expand(shortenedUri) {
     for (let prefix of Object.keys(prefixes)) {
-        if (str.startsWith(prefix + ":")) {
-            return prefixes[prefix] + str.slice(prefix.length + 1)
+        if (shortenedUri.startsWith(prefix + ":")) {
+            return prefixes[prefix] + shortenedUri.slice(prefix.length + 1)
         }
     }
-    return str
+    return shortenedUri
 }
 
-export function shrinkUri(str) {
+export function shrink(fullUri) {
     for (let [ prefix, uri ] of Object.entries(prefixes)) {
-        if (str.startsWith(uri)) {
-            return prefix + ":" + str.slice(uri.length)
+        if (fullUri.startsWith(uri)) {
+            return prefix + ":" + fullUri.slice(uri.length)
         }
     }
-    return str
+    return fullUri
 }
 
 export function quadToTriple(quad) {

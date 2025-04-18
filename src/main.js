@@ -28,10 +28,18 @@ export async function datasetToTurtle(dataset) {
     return await rdf.io.dataset.toText("text/turtle", dataset, { prefixes: prefixesArr })
 }
 
-export async function datasetToJsonLdObj(dataset) {
+export async function datasetToJsonLdObj(dataset, rootLevelTypes = []) {
     const nquads = await rdf.io.dataset.toText("application/n-quads", dataset)
-    const doc = await jsonld.fromRDF(nquads, { format: "application/n-quads" })
-    return await jsonld.compact(doc, prefixes)
+    const expanded = await jsonld.fromRDF(nquads, { format: "application/n-quads" })
+    if (rootLevelTypes.length === 0) {
+        return await jsonld.compact(expanded, prefixes)
+    }
+    const ROOT_FRAME = {
+        "@context": prefixes,
+        "@type": rootLevelTypes
+    }
+    const framed = await jsonld.frame(expanded, ROOT_FRAME)
+    return await jsonld.compact(framed, prefixes)
 }
 
 export function turtleToDataset(turtle) {
@@ -81,9 +89,9 @@ export function storeToTurtle(store) {
     return datasetToTurtle(dataset)
 }
 
-export function storeToJsonLdObj(store) {
+export function storeToJsonLdObj(store, rootLevelTypes = []) {
     const dataset = rdf.dataset(store.getQuads())
-    return datasetToJsonLdObj(dataset)
+    return datasetToJsonLdObj(dataset, rootLevelTypes)
 }
 
 function parseObject(obj) {

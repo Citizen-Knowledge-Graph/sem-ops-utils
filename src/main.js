@@ -96,6 +96,10 @@ export function storeToJsonLdObj(store, rootLevelTypes = []) {
     return datasetToJsonLdObj(dataset, rootLevelTypes)
 }
 
+export function addStoreToStore(source, target) {
+    target.addQuads(source.getQuads())
+}
+
 function parseObject(obj) {
     if (obj.constructor.name === "NamedNode" || obj.constructor.name === "Literal" ) return obj
     if (obj.toString().toLowerCase() === "true") return rdf.literal(true, rdf.namedNode(prefixes.xsd + "boolean"))

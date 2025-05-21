@@ -130,18 +130,17 @@ export async function sparqlConstruct(query, sourceStores, targetStore) {
 
 export async function sparqlSelect(query, store) {
     let bindingsStream = await queryEngine.queryBindings(query, { sources: [ store ] })
-    let rows = []
-    return new Promise((resolve, reject) => {
-        bindingsStream.on("data", (binding) => {
-            let row = {}
-            for (const [ key, value ] of binding) {
-                row[key.value] = value.value
-                rows.push(row)
-            }
+    let bindings = await bindingsStream.toArray()
+    let results = []
+    bindings.forEach(binding => {
+        const variables = Array.from(binding.keys()).map(({ value }) => value)
+        let row = {}
+        variables.forEach(variable => {
+            row[variable] = binding.get(variable).value
         })
-        bindingsStream.on("end", () => resolve(rows))
-        bindingsStream.on("error", (err) => reject(err))
+        results.push(row)
     })
+    return results
 }
 
 export async function sparqlInsertDelete(query, store) {

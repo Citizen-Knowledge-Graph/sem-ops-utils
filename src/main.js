@@ -147,6 +147,10 @@ export async function sparqlInsertDelete(query, store) {
     await queryEngine.queryVoid(query, { sources: [store] })
 }
 
+export async function sparqlAsk(query, store) {
+    return await queryEngine.queryBoolean(query, { sources: [store] })
+}
+
 export function isomorphicTurtles(turtle1, turtle2) {
     return isomorphic(turtleToDataset(turtle1), turtleToDataset(turtle2))
 }

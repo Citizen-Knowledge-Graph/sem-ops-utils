@@ -128,8 +128,8 @@ export async function sparqlConstruct(query, sourceStores, targetStore) {
     })
 }
 
-export async function sparqlSelect(query, store) {
-    let bindingsStream = await queryEngine.queryBindings(query, { sources: [ store ] })
+export async function sparqlSelect(query, stores) {
+    let bindingsStream = await queryEngine.queryBindings(query, { sources: stores })
     let bindings = await bindingsStream.toArray()
     let results = []
     bindings.forEach(binding => {
@@ -147,8 +147,8 @@ export async function sparqlInsertDelete(query, store) {
     await queryEngine.queryVoid(query, { sources: [store] })
 }
 
-export async function sparqlAsk(query, store) {
-    return await queryEngine.queryBoolean(query, { sources: [store] })
+export async function sparqlAsk(query, stores) {
+    return await queryEngine.queryBoolean(query, { sources: stores })
 }
 
 export function isomorphicTurtles(turtle1, turtle2) {

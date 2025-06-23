@@ -57,9 +57,13 @@ export async function jsonLdObjToDataset(jsonLdObj) {
     return rdf.dataset(parser.parse(nquads))
 }
 
-export function buildValidator(shaclStr, debug = false, details = false) {
+export function buildValidator(shaclStr, debug = false, details = false, trace = false) {
     const dataset = turtleToDataset(shaclStr)
-    return new Validator(dataset, { factory: rdf, debug: debug, details: details, validations })
+    return buildValidatorFromDataset(dataset, debug, details, trace)
+}
+
+export function buildValidatorFromDataset(dataset, debug = false, details = false, trace = false) {
+    return new Validator(dataset, { factory: rdf, debug: debug, details: details, trace: trace, validations })
 }
 
 export function newStore() {

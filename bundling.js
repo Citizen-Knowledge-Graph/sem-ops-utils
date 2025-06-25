@@ -26,6 +26,7 @@ import {
     formatTimestamp,
     formatTimestampAsLiteral,
     getRdf,
+    getWriter
 } from "./src/main.js"
 
 window.SemOpsUtils = {
@@ -55,5 +56,6 @@ window.SemOpsUtils = {
     quadToTriple,
     formatTimestamp,
     formatTimestampAsLiteral,
-    getRdf
+    getRdf,
+    getWriter
 }

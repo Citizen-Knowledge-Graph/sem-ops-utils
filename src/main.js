@@ -1,6 +1,6 @@
 import Validator from "shacl-engine/Validator.js"
 import { validations } from "shacl-engine/sparql.js"
-import { Parser, Store } from "n3"
+import { Parser, Store, Writer } from "n3"
 import { QueryEngine } from "@comunica/query-sparql-rdfjs-lite"
 import rdf from "rdf-ext"
 import formatsPretty from "@rdfjs/formats/pretty.js"
@@ -15,6 +15,10 @@ export const a = rdf.namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
 
 export function getRdf() {
     return rdf
+}
+
+export function getWriter(prefixes) {
+    return new Writer({ prefixes: prefixes })
 }
 
 export const prefixes = {

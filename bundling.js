@@ -25,7 +25,7 @@ import {
     quadToTriple,
     formatTimestamp,
     formatTimestampAsLiteral,
-    makeNamedNode
+    rdf,
 } from "./src/main.js"
 
 window.SemOpsUtils = {
@@ -55,5 +55,5 @@ window.SemOpsUtils = {
     quadToTriple,
     formatTimestamp,
     formatTimestampAsLiteral,
-    makeNamedNode
+    rdf
 }

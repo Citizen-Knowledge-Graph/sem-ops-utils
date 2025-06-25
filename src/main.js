@@ -13,8 +13,8 @@ export const queryEngine = new QueryEngine()
 
 export const a = rdf.namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
 
-export function makeNamedNode(uri) {
-    return rdf.namedNode(uri)
+export function rdf() {
+    return rdf
 }
 
 export const prefixes = {

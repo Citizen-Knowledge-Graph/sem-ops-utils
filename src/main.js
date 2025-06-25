@@ -13,7 +13,7 @@ export const queryEngine = new QueryEngine()
 
 export const a = rdf.namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
 
-export function rdf() {
+export function getRdf() {
     return rdf
 }
 

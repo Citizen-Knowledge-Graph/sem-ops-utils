@@ -98,6 +98,15 @@ export function storeFromTurtles(turtleStrings) {
     return store
 }
 
+export function datasetFromTurtles(turtleStrings) {
+    const dataset = rdf.dataset()
+    for (let str of turtleStrings) {
+        const quads = parser.parse(str)
+        dataset.addAll(quads)
+    }
+    return dataset
+}
+
 export function storeToTurtle(store) {
     const dataset = rdf.dataset(store.getQuads())
     return datasetToTurtle(dataset)

@@ -26,7 +26,8 @@ import {
     formatTimestamp,
     formatTimestampAsLiteral,
     getRdf,
-    getWriter
+    getWriter,
+    datasetFromTurtles
 } from "./src/main.js"
 
 window.SemOpsUtils = {
@@ -57,5 +58,6 @@ window.SemOpsUtils = {
     formatTimestamp,
     formatTimestampAsLiteral,
     getRdf,
-    getWriter
+    getWriter,
+    datasetFromTurtles
 }

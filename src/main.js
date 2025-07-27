@@ -21,6 +21,7 @@ export function getWriter(prefixes) {
     return new Writer({ prefixes: prefixes })
 }
 
+// use rdf.namespace instead to be able to use ns.rdfs.label etc. TODO
 export const prefixes = {
     ff: "https://foerderfunke.org/default#",
     sh: "http://www.w3.org/ns/shacl#",
@@ -121,15 +122,23 @@ export function addStoreToStore(source, target) {
     target.addQuads(source.getQuads())
 }
 
-function parseObject(obj) {
-    if (obj.constructor.name === "NamedNode" || obj.constructor.name === "Literal" ) return obj
-    if (obj.toString().toLowerCase() === "true") return rdf.literal(true, rdf.namedNode(prefixes.xsd + "boolean"))
-    if (obj.toString().toLowerCase() === "false") return rdf.literal(false, rdf.namedNode(prefixes.xsd + "boolean"))
-    if (obj.constructor.name === "String" && (obj.startsWith("http://") || obj.startsWith("https://"))) return rdf.namedNode(obj)
-    if (isNaN(obj)) return rdf.literal(obj)
-    const value = Number(obj)
-    if (Number.isInteger(value)) return rdf.literal(String(value), rdf.namedNode(prefixes.xsd + "integer"))
-    return rdf.literal(String(value), rdf.namedNode(prefixes.xsd + "decimal"))
+export function parseObject(obj) {
+    if (obj?.termType === "NamedNode" || obj?.termType === "Literal" || obj?.termType === "BlankNode") return obj
+    const xsd = suffix => rdf.namedNode(prefixes.xsd + suffix)
+    if (typeof obj === "boolean") return rdf.literal(obj.toString(), xsd("boolean"))
+    obj = obj.toString().trim()
+    if (obj.toLowerCase() === "true") return rdf.literal("true", xsd("boolean"))
+    if (obj.toLowerCase() === "false") return rdf.literal("false", xsd("boolean"))
+    let expanded = expand(obj)
+    if (expanded.startsWith("http://") || expanded.startsWith("https://")) return rdf.namedNode(expanded)
+    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(obj)) return rdf.literal(obj, xsd("dateTime"))
+    if (/^\d{4}-\d{2}-\d{2}/.test(obj)) return rdf.literal(obj.substring(0, 10), xsd("date"))
+    let num = Number(obj)
+    if (!isNaN(num)) {
+        let dtype = Number.isInteger(num) ? xsd("integer") : xsd("decimal")
+        return rdf.literal(obj, dtype)
+    }
+    return rdf.literal(obj)
 }
 
 export function addTriple(store, sub, pred, obj) {

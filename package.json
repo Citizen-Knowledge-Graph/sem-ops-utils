@@ -1,6 +1,6 @@
 {
   "name": "@foerderfunke/sem-ops-utils",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A collection of utility functions and libraries for semantic operations",
   "author": "@foerderfunke",
   "repository": "github:Citizen-Knowledge-Graph/sem-ops-utils",
@@ -8,7 +8,8 @@
   "type": "module",
   "main": "src/main.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "test": "mocha"
   },
   "dependencies": {
     "@comunica/query-sparql-rdfjs-lite": "^4.3.0",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "webpack": "^5.99.9",
-    "webpack-cli": "^6.0.1"
+    "webpack-cli": "^6.0.1",
+    "mocha": "^11.7.1"
   }
 }

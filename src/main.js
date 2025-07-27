@@ -202,6 +202,10 @@ export function expand(shortenedUri) {
     return shortenedUri
 }
 
+export function nnExpand(shortenedUri) {
+    return rdf.namedNode(expand(shortenedUri))
+}
+
 export function shrink(fullUri) {
     for (let [ prefix, uri ] of Object.entries(prefixes)) {
         if (fullUri.startsWith(uri)) {

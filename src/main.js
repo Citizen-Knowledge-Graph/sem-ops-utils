@@ -29,7 +29,8 @@ export const prefixes = {
     rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     rdfs: "http://www.w3.org/2000/01/rdf-schema#",
     shn: "https://schemas.link/shacl-next#",
-    schema: "http://schema.org/"
+    schema: "http://schema.org/",
+    barcamp: "https://foerderfunke.org/lod-barcamp-bielefeld#"
 }
 
 const prefixesArr = Object.entries(prefixes).map(

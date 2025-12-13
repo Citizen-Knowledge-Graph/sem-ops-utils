@@ -37,7 +37,13 @@ const prefixesArr = Object.entries(prefixes).map(
     ([prefix, iri]) => [prefix, rdf.namedNode(iri)]
 )
 
-export async function datasetToTurtle(dataset) {
+export async function datasetToTurtle(dataset, additionalPrefixes = {}) {
+    if (Object.keys(additionalPrefixes).length > 0) {
+        const additionalPrefixesArr = Object.entries(additionalPrefixes).map(
+            ([prefix, iri]) => [prefix, rdf.namedNode(iri)]
+        )
+        prefixesArr.push(...additionalPrefixesArr)
+    }
     return await rdf.io.dataset.toText("text/turtle", dataset, { prefixes: prefixesArr })
 }
 
@@ -110,9 +116,9 @@ export function datasetFromTurtles(turtleStrings) {
     return dataset
 }
 
-export function storeToTurtle(store) {
+export function storeToTurtle(store, additionalPrefixes = {}) {
     const dataset = rdf.dataset(store.getQuads())
-    return datasetToTurtle(dataset)
+    return datasetToTurtle(dataset, additionalPrefixes)
 }
 
 export function storeToJsonLdObj(store, rootLevelTypes = []) {

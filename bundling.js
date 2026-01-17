@@ -1,5 +1,6 @@
 import {
     datasetToTurtle,
+    datasetToTurtleWriter,
     datasetToJsonLdObj,
     turtleToDataset,
     turtleToJsonLdObj,
@@ -34,6 +35,7 @@ import {
 
 window.SemOpsUtils = {
     datasetToTurtle,
+    datasetToTurtleWriter,
     datasetToJsonLdObj,
     turtleToDataset,
     turtleToJsonLdObj,

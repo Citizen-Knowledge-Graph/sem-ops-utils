@@ -1,6 +1,6 @@
 import { describe, it } from "mocha"
 import { deepStrictEqual } from "node:assert"
-import { parseObject } from "../src/main.js"
+import { datasetToTurtle, datasetToTurtleWriter, parseObject } from "../src/main.js"
 import rdf from "rdf-ext"
 
 const xsd = suffix => rdf.namedNode("http://www.w3.org/2001/XMLSchema#" + suffix)
@@ -25,5 +25,16 @@ describe("all tests", function () {
         deepStrictEqual(parseObject("-5"), rdf.literal("-5", xsd("integer")))
         deepStrictEqual(parseObject("3.14"), rdf.literal("3.14", xsd("decimal")))
         deepStrictEqual(parseObject(" hello "), rdf.literal("hello"))
+    })
+
+    it("test dataset to turtle", async function () {
+        const dataset = rdf.dataset()
+        // optionally encodeURI, but the stream writer recognizes these and wraps them in <>
+        dataset.add(rdf.quad(rdf.namedNode("http://example.org/s"), rdf.namedNode(encodeURI("http://example.org/aeiou.äDot.")), rdf.namedNode("http://example.org/o")))
+        const prefixes = { ex: "http://example.org/" }
+        const turtle = await datasetToTurtle(dataset, prefixes)
+        console.log(turtle)
+        const turtleWriter = await datasetToTurtleWriter(dataset, prefixes)
+        console.log(turtleWriter)
     })
 })

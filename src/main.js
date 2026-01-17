@@ -47,6 +47,19 @@ export async function datasetToTurtle(dataset, additionalPrefixes = {}) {
     return await rdf.io.dataset.toText("text/turtle", dataset, { prefixes: prefixesArr })
 }
 
+export async function datasetToTurtleWriter(dataset, additionalPrefixes = {}, format = "text/turtle") {
+    const mergedPrefixes = {...prefixes, ...additionalPrefixes}
+    // another format would be application/n-triples
+    const writer = new Writer({ prefixes: mergedPrefixes, format} )
+    writer.addQuads([...dataset])
+    return await new Promise((resolve, reject) => {
+        writer.end((err, result) => {
+            if (err) reject(err)
+            else resolve(result)
+        })
+    })
+}
+
 export async function datasetToJsonLdObj(dataset, rootLevelTypes = []) {
     const nquads = await rdf.io.dataset.toText("application/n-quads", dataset)
     const expanded = await jsonld.fromRDF(nquads, { format: "application/n-quads" })

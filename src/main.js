@@ -129,14 +129,14 @@ export function datasetFromTurtles(turtleStrings) {
     return dataset
 }
 
-export function storeToTurtle(store, additionalPrefixes = {}) {
+export async function storeToTurtle(store, additionalPrefixes = {}) {
     const dataset = rdf.dataset(store.getQuads())
-    return datasetToTurtle(dataset, additionalPrefixes)
+    return await datasetToTurtle(dataset, additionalPrefixes)
 }
 
-export function storeToJsonLdObj(store, rootLevelTypes = []) {
+export async function storeToJsonLdObj(store, rootLevelTypes = []) {
     const dataset = rdf.dataset(store.getQuads())
-    return datasetToJsonLdObj(dataset, rootLevelTypes)
+    return await datasetToJsonLdObj(dataset, rootLevelTypes)
 }
 
 export function addStoreToStore(source, target) {

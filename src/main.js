@@ -156,8 +156,11 @@ export function parseObject(obj) {
     if (/^\d{4}-\d{2}-\d{2}/.test(obj)) return rdf.literal(obj.substring(0, 10), xsd("date"))
     let num = Number(obj)
     if (!isNaN(num)) {
-        let dtype = Number.isInteger(num) ? xsd("integer") : xsd("decimal")
-        return rdf.literal(obj, dtype)
+        if (Number.isInteger(num)) {
+            return rdf.literal(String(parseInt(obj)), xsd("integer"))
+        } else {
+            return rdf.literal(String(num), xsd("decimal"))
+        }
     }
     return rdf.literal(obj)
 }

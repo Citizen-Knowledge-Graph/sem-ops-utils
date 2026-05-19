@@ -143,6 +143,16 @@ export function addStoreToStore(source, target) {
     target.addQuads(source.getQuads())
 }
 
+// URI schemes that parseObject promotes to NamedNode - strings like "key:value" stay literals by default
+export const URI_SCHEMES = new Set([
+    "http", "https",
+    "urn", "tag", "did",
+    "mailto", "tel", "geo",
+    "file", "ftp", "sftp",
+    "ws", "wss",
+    "info", "data",
+])
+
 export function parseObject(obj) {
     if (obj?.termType === "NamedNode" || obj?.termType === "Literal" || obj?.termType === "BlankNode") return obj
     const xsd = suffix => rdf.namedNode(prefixes.xsd + suffix)
@@ -151,7 +161,11 @@ export function parseObject(obj) {
     if (obj.toLowerCase() === "true") return rdf.literal("true", xsd("boolean"))
     if (obj.toLowerCase() === "false") return rdf.literal("false", xsd("boolean"))
     let expanded = expand(obj)
-    if (expanded.startsWith("http://") || expanded.startsWith("https://")) return rdf.namedNode(expanded)
+    // promote to NamedNode only if the part before the first ":" is a recognized URI scheme
+    const colon = expanded.indexOf(":")
+    if (colon > 0 && URI_SCHEMES.has(expanded.slice(0, colon).toLowerCase())) {
+        return rdf.namedNode(expanded)
+    }
     if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(obj)) return rdf.literal(obj, xsd("dateTime"))
     if (/^\d{4}-\d{2}-\d{2}/.test(obj)) return rdf.literal(obj.substring(0, 10), xsd("date"))
     let num = Number(obj)

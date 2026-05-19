@@ -19,6 +19,14 @@ describe("all tests", function () {
         deepStrictEqual(parseObject("False"), rdf.literal("false", xsd("boolean")))
         deepStrictEqual(parseObject("ff:Test"), rdf.namedNode("https://foerderfunke.org/default#" + "Test"))
         deepStrictEqual(parseObject("https://example.org/dev"), rdf.namedNode("https://example.org/dev"))
+        // Recognized non-http(s) URI schemes also produce NamedNodes
+        deepStrictEqual(parseObject("urn:isbn:0451450523"), rdf.namedNode("urn:isbn:0451450523"))
+        deepStrictEqual(parseObject("tag:example.com,2024:foo"), rdf.namedNode("tag:example.com,2024:foo"))
+        deepStrictEqual(parseObject("mailto:foo@example.com"), rdf.namedNode("mailto:foo@example.com"))
+        // Strings whose colon-prefix isn't in URI_SCHEMES stay as literals
+        deepStrictEqual(parseObject("key:value"), rdf.literal("key:value"))
+        deepStrictEqual(parseObject("ratio:3:4"), rdf.literal("ratio:3:4"))
+        deepStrictEqual(parseObject("Hello: world"), rdf.literal("Hello: world"))
         deepStrictEqual(parseObject("2025-07-27T14:30:00"), rdf.literal("2025-07-27T14:30:00", xsd("dateTime")))
         deepStrictEqual(parseObject("2025-07-27"), rdf.literal("2025-07-27", xsd("date")))
         deepStrictEqual(parseObject("7"), rdf.literal("7", xsd("integer")))

@@ -3,7 +3,6 @@ A collection of utility functions and libraries for semantic operations
 
 ```shell
 # after bumping the version
-npm run build
 npm publish
 ```
 
@@ -11,24 +10,17 @@ npm publish
 
 ```shell
 npm install --save @foerderfunke/sem-ops-utils
-
-import { datasetToTurtle } from "sem-ops-utils"
 ```
-or:
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>dev</title>
-</head>
-<body>
-    <script src="./dist/bundle.js"></script>
-    <script>
-        SemOpsUtils.datasetToTurtle()
-        // ...
-    </script>
-</body>
-</html>
+```js
+import { datasetToTurtle } from "@foerderfunke/sem-ops-utils"
+```
+
+Submodule entry points are also available so consumers only pull in the dependencies they actually need:
+
+```js
+import { addTriple, newStore } from "@foerderfunke/sem-ops-utils/core"     // n3 + rdf-ext only
+import { sparqlSelect } from "@foerderfunke/sem-ops-utils/sparql"           // adds Comunica
+import { buildValidator } from "@foerderfunke/sem-ops-utils/shacl"          // adds shacl-engine
+import { datasetToJsonLdObj } from "@foerderfunke/sem-ops-utils/jsonld"     // adds jsonld
 ```

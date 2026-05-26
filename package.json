@@ -1,6 +1,6 @@
 {
   "name": "@foerderfunke/sem-ops-utils",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A collection of utility functions and libraries for semantic operations",
   "author": "@foerderfunke",
   "repository": "github:Citizen-Knowledge-Graph/sem-ops-utils",
@@ -23,7 +23,7 @@
     "n3": "^1.26.0",
     "rdf-ext": "^2.5.2",
     "rdf-isomorphic": "^2.0.1",
-    "shacl-engine": "github:rdf-ext/shacl-engine#experimental"
+    "shacl-engine": "github:rdf-ext/shacl-engine#b067ffaf1a041a9f5f7515df00bf476b3a52617c"
   },
   "devDependencies": {
     "mocha": "^11.7.1"
